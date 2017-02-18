@@ -38,7 +38,7 @@ module.exports = {
                 exclude: path.resolve(__dirname, "node_modules"),
                 include: path.resolve(__dirname, "src")
             },
-            {test: /\.css$/, loader: "style!css"},
+            {test: /\.css$/, loader: "style-loader!css-loader"},
             {test: /\.less$/, loader: "style-loader!css-loader!less-loader"},
             {test: /\.otf(\?[a-z0-9]+)?$/, loader: "url-loader?limit=10000&countryCode=[countryCode]-[hash].[ext]"},
             {test: /\.woff(\?.+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff"},
@@ -51,7 +51,7 @@ module.exports = {
 
 
     devServer: {
-        host: "localhost",
+        host: "0.0.0.0",
         port: 3000,
         historyApiFallback: true,
         hot: true

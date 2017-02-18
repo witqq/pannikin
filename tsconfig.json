@@ -4,7 +4,9 @@
     "sourceMap": true,
     "jsx": "react",
     "module": "commonjs",
-    "noEmit": true
+    "noEmit": true,
+    "experimentalDecorators": true
+    //    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "node_modules"
