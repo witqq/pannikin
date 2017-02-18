@@ -25,7 +25,14 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),
         new WebpackNotifierPlugin({alwaysNotify: true}),
-        new webpack.NoEmitOnErrorsPlugin()
+        new webpack.NoEmitOnErrorsPlugin(),
+        new webpack.ProvidePlugin({
+            jQuery: 'jquery',
+            $: 'jquery',
+            jquery: 'jquery',
+            "window.jQuery": 'jquery',
+            Promise : "bluebird"
+        }),
     ],
     module: {
         rules: [

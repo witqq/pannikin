@@ -4,6 +4,7 @@ import {observer, inject} from "mobx-react";
 import {Stores, appStore} from "../../stores";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
+import {APP_TITLE} from "../constants/app-constants";
 
 export interface MainProps extends Stores {
 
@@ -23,7 +24,7 @@ export class Main extends Component<MainProps, MainState> {
   }
 
   componentWillMount() {
-    this.props.appStore.setTitle("Кострюлька");
+    this.props.appStore.setTitle(APP_TITLE);
   }
 
   public render() {

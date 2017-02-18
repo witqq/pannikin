@@ -1,12 +1,14 @@
 import * as React from "react";
 import RaisedButton from "material-ui/RaisedButton";
-import {AppHistory} from "../app-router";
 import {observer, inject} from "mobx-react";
 import List from "material-ui/List/List";
 import ListItem from "material-ui/List/ListItem";
 import {Stores, gameStore} from "../../stores";
+import {appHistory} from "../app-history";
+import TextField from "material-ui/TextField";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
+import FormEvent = React.FormEvent;
 
 export interface GameViewProps extends Stores {
 
@@ -21,17 +23,28 @@ export interface GameViewState {
 export class GameView extends Component<GameViewProps, GameViewState> {
 
   private onAddPlayer = () => {
-    AppHistory.push("/player");
+    appHistory.push("/player");
   };
 
   private selectPlayer = (id: string) => {
-    AppHistory.push(`/player/${id}`);
+    appHistory.push(`/player/${id}`);
   };
+
+  private onWordsCntChange = (ev: FormEvent<HTMLInputElement>) => {
+    const {gameStore} = this.props;
+    const wordsCnt = parseInt(ev.currentTarget.value);
+    gameStore.setWordCnt(wordsCnt);
+  }
 
   public render() {
     const {gameStore} = this.props;
     return (
         <div>
+          <TextField hintText="Количесвто слов"
+                     floatingLabelText="Количесвто слов"
+                     type="number"
+                     value={gameStore.wordsCnt}
+                     onChange={this.onWordsCntChange}/>
           <List>
             {(
                 gameStore.players.values().map(({name, id}) =>
@@ -41,9 +54,9 @@ export class GameView extends Component<GameViewProps, GameViewState> {
                 )
             )}
           </List>
-          < RaisedButton label="Добавить игрока"
-                         primary={true}
-                         onClick={this.onAddPlayer}/>
+          <RaisedButton label="Добавить игрока"
+                        primary={true}
+                        onClick={this.onAddPlayer}/>
         </div>);
   }
 }

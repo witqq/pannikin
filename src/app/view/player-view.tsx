@@ -5,11 +5,12 @@ import {Player} from "../store/player";
 import {Stores, gameStore, appStore} from "../../stores";
 import TextField from "material-ui/TextField";
 import RaisedButton from "material-ui/RaisedButton";
-import {AppHistory} from "../app-router";
-import {autorun} from "mobx";
+import {autorun, observable} from "mobx";
+import {createViewModel, IViewModel} from "mobx-utils";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
 import FormEvent = React.FormEvent;
+import {appHistory} from "../app-history";
 
 export interface PlayerViewParams {
   id?: string;
@@ -27,24 +28,33 @@ export interface PlayerViewState {
 @observer
 export class PlayerView extends Component<PlayerViewProps, PlayerViewState> {
 
-  private player: Player;
+  private player: Player& IViewModel<Player>;
+
+  @observable
+  isNew = false;
 
   constructor(props) {
     super(props);
     this.state = {};
     const id = this.props.params.id;
     const players = this.props.gameStore.players;
+    let player: Player;
     if (id) {
-      this.player = players.get(id)
+      player = players.get(id);
+      this.isNew = false;
     }
     else {
-      this.player = new Player(`Игрок ${players.keys().length + 1}`);
+      player = new Player(`Игрок ${players.keys().length + 1}`);
+      this.isNew = true;
     }
 
+    if (player) {
+      this.player = createViewModel(player);
+    }
   }
 
   componentWillMount() {
-    autorun(() => this.props.appStore.setTitle(this.player.name));
+    autorun(() => this.player && this.props.appStore.setTitle(this.player.name));
   }
 
   private onNameChange = (ev: FormEvent<HTMLInputElement>) => {
@@ -52,11 +62,19 @@ export class PlayerView extends Component<PlayerViewProps, PlayerViewState> {
   };
 
   private onAdd = () => {
-    this.props.gameStore.setPlayer(this.player);
-    AppHistory.replace("/");
+    const player = this.player;
+    player.submit();
+    if (this.isNew) {
+      this.props.gameStore.setPlayer(this.player.model);
+    }
+    appHistory.replace("/");
   };
 
   public render() {
+    if (!this.player) {
+      return <div>Игрок не найден</div>
+    }
+    const submitLabel = this.isNew && "Добавить игрока" || "Сохранить";
     return (
         <div>
           <TextField hintText="Твое Имя"
@@ -64,7 +82,7 @@ export class PlayerView extends Component<PlayerViewProps, PlayerViewState> {
                      value={this.player.name}
                      onChange={this.onNameChange}
                      ref={ref => ref && ref.focus()}/>
-          <RaisedButton label="Добавить игрока"
+          <RaisedButton label={submitLabel}
                         primary={true}
                         fullWidth={true}
                         onClick={this.onAdd}

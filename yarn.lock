@@ -2,7 +2,11 @@
 # yarn lockfile v1
 
 
-"@types/history@*":
+"@types/bluebird@^3.0.37":
+  version "3.0.37"
+  resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.0.37.tgz#2e76b394aa9bea40d04241a31c0887a260283388"
+
+"@types/history@*", "@types/history@^4.5.0":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.5.0.tgz#2f5c3aad4fbd00f89e99b83083e354bc5308e307"
 
@@ -878,11 +882,19 @@ binary-extensions@^1.0.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.8.0.tgz#48ec8d16df4377eae5fa5884682480af4d95c774"
 
+bind-decorator@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/bind-decorator/-/bind-decorator-1.0.10.tgz#16b52bab374447585f1ed44a2d0fe8d336bd1a6e"
+
 block-stream@*:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/block-stream/-/block-stream-0.0.9.tgz#13ebfe778a03205cfe03751481ebb4b3300c126a"
   dependencies:
     inherits "~2.0.0"
+
+bluebird@^3.4.7:
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.7.tgz#f72d760be09b7f76d08ed8fae98b289a8d05fab3"
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.6"
@@ -1244,10 +1256,6 @@ cookie-signature@1.0.6:
 cookie@0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
-
-core-decorators@^0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/core-decorators/-/core-decorators-0.15.0.tgz#e5a58ff7ed48b9d2ef42262fd9550cddde18a819"
 
 core-js@^1.0.0:
   version "1.2.7"
@@ -2466,6 +2474,13 @@ marked@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.6.tgz#b2c6c618fccece4ef86c4fc6cb8a7cbf5aeda8d7"
 
+material-ui-number-input@^5.0.17:
+  version "5.0.17"
+  resolved "https://registry.yarnpkg.com/material-ui-number-input/-/material-ui-number-input-5.0.17.tgz#4a1f80f24eb55be456d7000885fc385f483f7259"
+  dependencies:
+    bind-decorator "^1.0.10"
+    object-assign "^4.1.1"
+
 material-ui@^0.17.0:
   version "0.17.0"
   resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-0.17.0.tgz#fd0e2e16f55184f66bc770225a053444e4ae7d33"
@@ -2585,15 +2600,21 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
-mobx-react-router@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/mobx-react-router/-/mobx-react-router-3.1.2.tgz#83328b108393017148d86fea17f611de2d2aacdc"
+mobx-persist@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/mobx-persist/-/mobx-persist-0.2.1.tgz#f4abf32300bf0ccda94537dd9875a49609afd22b"
+  dependencies:
+    serializr "^1.1.8"
 
 mobx-react@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-4.1.0.tgz#0b4927a8c4457dbb296c512693acdf9073d9afc7"
   dependencies:
     hoist-non-react-statics "^1.2.0"
+
+mobx-utils@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/mobx-utils/-/mobx-utils-2.0.1.tgz#6460d6436f991b2d3250d51995cbcae2c5707b67"
 
 mobx@^3.1.0:
   version "3.1.0"
@@ -2739,7 +2760,7 @@ oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
 
-object-assign@^4.0.1, object-assign@^4.1.0:
+object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
@@ -3557,6 +3578,10 @@ send@0.14.2:
     on-finished "~2.3.0"
     range-parser "~1.2.0"
     statuses "~1.3.1"
+
+serializr@^1.1.8:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/serializr/-/serializr-1.1.9.tgz#d9c193deb2cfa724bf3f459560f0ceb7b3bbeba7"
 
 serve-index@^1.7.2:
   version "1.8.0"

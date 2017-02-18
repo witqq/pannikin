@@ -1,19 +1,22 @@
 import * as React from "react";
 import {Provider} from "mobx-react";
-import {Stores} from "./stores";
+import {Stores, appStore, gameStore} from "./stores";
 import {AppStore} from "./app/store/app-store";
 import {Game} from "./app/store/game";
 import {AppRouter} from "./app/app-router";
 import "normalize.css/normalize.css";
+import {create} from "mobx-persist/lib";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
 import injectTapEventPlugin = require("react-tap-event-plugin");
 
 injectTapEventPlugin();
 
+const persistStore = create();
+
 const stores: Stores = {
-  appStore: new AppStore(),
-  gameStore: new Game()
+  appStore: persistStore(appStore, new AppStore()),
+  gameStore: persistStore(gameStore, new Game())
 };
 
 window.stores = stores;
