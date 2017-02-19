@@ -3,6 +3,7 @@ import {PlayerViewProps} from "./player-view";
 import {observable, action, computed} from "mobx";
 import {Player, addWord, isPlayerValid, playerWordRemaining} from "../../stores/player";
 import {Game} from "../../stores/game";
+import {AppSnackBar} from "../snack-bar/snack-bar-store";
 
 export class PlayerViewStore {
 
@@ -19,9 +20,6 @@ export class PlayerViewStore {
 
   @observable
   word = "";
-
-  @observable
-  message = "";
 
   @observable
   gameStore: Game;
@@ -66,16 +64,11 @@ export class PlayerViewStore {
     const res = addWord(this.player, this.word);
     if (res !== true) {
       if (typeof res === "string") {
-        this.message = res;
+        AppSnackBar.setMessage(res);
       }
       return;
     }
     this.word = "";
-  }
-
-  @action
-  clearMessage() {
-    this.message = "";
   }
 
 }

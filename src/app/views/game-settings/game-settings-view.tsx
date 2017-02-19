@@ -40,6 +40,11 @@ export class GameSettingsView extends Component<GameSettingsViewProps, GameSetti
     const {gameStore} = this.props;
     const wordsCnt = parseInt(ev.currentTarget.value);
     gameStore.setWordCnt(wordsCnt);
+  };
+
+  private onStartClick = () => {
+    const {gameStore} = this.props;
+    gameStore.startGame();
   }
 
   public render() {
@@ -69,7 +74,8 @@ export class GameSettingsView extends Component<GameSettingsViewProps, GameSetti
                           onClick={this.onAddPlayer}/>
           </CardActions>
           <FloatingActionButton className="start-game-button"
-                                disabled={!this.props.gameStore.canStart}>
+                                disabled={!this.props.gameStore.canStart}
+                                onClick={this.onStartClick}>
             <AvPlayArrow />
           </FloatingActionButton>
         </Card>);

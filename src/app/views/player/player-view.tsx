@@ -94,7 +94,6 @@ export class PlayerView extends Component<PlayerViewProps, PlayerViewState> {
       return <div>Игрок не найден</div>
     }
     const submitLabel = this.store.isNew && "Добавить игрока" || "Сохранить";
-    const message = this.store.message;
     const wordsRemaining = this.store.wordsRemaining;
     return (
         <div>
@@ -134,10 +133,7 @@ export class PlayerView extends Component<PlayerViewProps, PlayerViewState> {
                             onClick={this.onAdd}
                             disabled={!this.store.isValid}/>
             </CardActions>
-            <Snackbar open={!!message}
-                      message={message}
-                      autoHideDuration={4000}
-                      onRequestClose={() => this.store.clearMessage()}/>
+
           </Card>
         </div>);
   }

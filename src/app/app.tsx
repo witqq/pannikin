@@ -12,6 +12,7 @@ import IconMenu from "material-ui/IconMenu";
 import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import MenuItem from "material-ui/MenuItem";
 import IconButton from "material-ui/IconButton";
+import {SnackBarView} from "./views/snack-bar/snack-bar-view";
 import Component = React.Component;
 
 export interface AppProps extends Stores, RouteComponentProps<{}, {}> {
@@ -74,6 +75,7 @@ export class App extends Component<AppProps, AppState> {
             <div className="app-container flex-container-content">
               {this.props.children}
             </div>
+            <SnackBarView/>
           </div>
         </MuiThemeProvider>
     );
