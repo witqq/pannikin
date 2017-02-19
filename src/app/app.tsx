@@ -14,6 +14,7 @@ import MenuItem from "material-ui/MenuItem";
 import IconButton from "material-ui/IconButton";
 import {SnackBarView} from "./views/snack-bar/snack-bar-view";
 import Component = React.Component;
+import DevTools from "mobx-react-devtools";
 
 export interface AppProps extends Stores, RouteComponentProps<{}, {}> {
 
@@ -76,6 +77,7 @@ export class App extends Component<AppProps, AppState> {
               {this.props.children}
             </div>
             <SnackBarView/>
+            <DevTools/>
           </div>
         </MuiThemeProvider>
     );

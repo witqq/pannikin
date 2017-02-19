@@ -10,6 +10,7 @@ import {AppSnackBar} from "./app/views/snack-bar/snack-bar-store";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
 import injectTapEventPlugin = require("react-tap-event-plugin");
+import DevTools from "mobx-react-devtools";
 
 injectTapEventPlugin();
 

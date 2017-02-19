@@ -1,4 +1,5 @@
 export enum GameState{
   Settings,
-  Commands
+  Commands,
+  Play
 }

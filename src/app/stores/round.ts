@@ -1,15 +1,14 @@
 import {persist} from "mobx-persist/lib";
-import {observable} from "mobx";
-import {Teams} from "./teams";
+import {observable, action} from "mobx";
 import {Game} from "./game";
 import {randomInt} from "../utils/random-int";
 
 export class Round {
 
   constructor(game: Game) {
-    this.wordIds = game.allWords.map(word => word.id);
-
-    this.currentTeam = randomInt(0, 2);
+    if (game) {
+      this.wordIds = Object.keys(game.allWords);
+    }
   }
 
   @persist('list')
@@ -18,7 +17,22 @@ export class Round {
 
   @persist
   @observable
-  currentTeam: Teams;
+  currentWordId: string;
+
+  @action
+  pickWord() {
+    const wordIds = this.wordIds;
+    const currentWordId = this.currentWordId;
+    if (currentWordId) {
+      wordIds.splice(wordIds.indexOf(currentWordId), 1);
+    }
+    this.currentWordId = wordIds[randomInt(0, wordIds.length)]
+  }
+
+  @action
+  dropWord() {
+    this.currentWordId = null;
+  }
 
 }
 

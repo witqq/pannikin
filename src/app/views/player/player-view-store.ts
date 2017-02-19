@@ -24,6 +24,8 @@ export class PlayerViewStore {
   @observable
   gameStore: Game;
 
+
+
   @computed get player() {
     const id = this.id;
     const players = this.gameStore.players;
@@ -50,7 +52,7 @@ export class PlayerViewStore {
     const player = this.player;
     player.submit();
     if (this.isNew) {
-      this.gameStore.setPlayer(this.player.model);
+      this.gameStore.setPlayer(player.model);
     }
   }
 

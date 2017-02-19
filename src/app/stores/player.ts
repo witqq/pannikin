@@ -1,4 +1,4 @@
-import {observable, action} from "mobx";
+import {observable, action, computed} from "mobx";
 import {persist} from "mobx-persist/lib";
 import {IdName} from "./utils/id-name";
 import {Word} from "./word";
@@ -7,6 +7,17 @@ import {Teams} from "./teams";
 
 export class Player extends IdName {
 
+  constructor(name: string) {
+    super(name);
+    this.resetResults();
+  }
+
+  @action
+  resetResults() {
+    this.resultsByRound = [new PlayerRoundResults(), new PlayerRoundResults(), new PlayerRoundResults()];
+
+  }
+
   @persist("list", Word)
   @observable
   words: Array<Word> = [];
@@ -14,6 +25,19 @@ export class Player extends IdName {
   @persist
   @observable
   team: Teams;
+
+  @computed get teamName() {
+    return this.team === Teams.Team1 && "1" || "2";
+  }
+
+  @persist("list", PlayerRoundResults)
+  @observable
+  resultsByRound: Array<PlayerRoundResults>;
+
+  @action
+  resolveWord(round: number, wordId: string) {
+    this.resultsByRound[round].resolvedWords.push(wordId);
+  }
 
 }
 
@@ -38,3 +62,9 @@ export const addWord = action((player: Player, newWord: string): string|boolean 
   player.words.push(new Word(newWord));
   return true;
 })
+
+export class PlayerRoundResults {
+  @persist
+  @observable
+  resolvedWords: Array<string> = []
+}

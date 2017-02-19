@@ -3,6 +3,8 @@ import {observer, inject} from "mobx-react";
 import {gameStore, Stores} from "../../../stores";
 import RaisedButton from "material-ui/RaisedButton";
 import {GameState} from "../../stores/game-states";
+import FloatingActionButton from "material-ui/FloatingActionButton";
+import AvPlayArrow from "material-ui/svg-icons/av/play-arrow";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
 
@@ -27,6 +29,10 @@ export class CommandsView extends Component<CommandsViewProps, CommandsViewState
     this.props.gameStore.state = GameState.Settings;
   };
 
+  private startFirstRound = () => {
+    this.props.gameStore.startFirstRound();
+  };
+
   public render() {
     return (
         <div>
@@ -41,6 +47,10 @@ export class CommandsView extends Component<CommandsViewProps, CommandsViewState
           <RaisedButton label="Вернутся в настройки игры"
                         primary={true}
                         onClick={this.onGoSettings}/>
+          <FloatingActionButton className="start-game-button"
+                                onClick={this.startFirstRound}>
+            <AvPlayArrow />
+          </FloatingActionButton>
         </div>);
   }
 }

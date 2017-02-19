@@ -12,6 +12,7 @@ import CardText from "material-ui/Card/CardText";
 import FloatingActionButton from "material-ui/FloatingActionButton";
 import "./game-settings-view.less";
 import AvPlayArrow from "material-ui/svg-icons/av/play-arrow";
+import {now} from "mobx-utils";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
 import FormEvent = React.FormEvent;
@@ -74,7 +75,7 @@ export class GameSettingsView extends Component<GameSettingsViewProps, GameSetti
                           onClick={this.onAddPlayer}/>
           </CardActions>
           <FloatingActionButton className="start-game-button"
-                                disabled={!this.props.gameStore.canStart}
+                                disabled={!gameStore.canStart}
                                 onClick={this.onStartClick}>
             <AvPlayArrow />
           </FloatingActionButton>
