@@ -3,12 +3,17 @@ import {persist} from "mobx-persist/lib";
 import {IdName} from "./utils/id-name";
 import {Word} from "./word";
 import {Game} from "./game";
+import {Teams} from "./teams";
 
 export class Player extends IdName {
 
   @persist("list", Word)
   @observable
   words: Array<Word> = [];
+
+  @persist
+  @observable
+  team: Teams;
 
 }
 

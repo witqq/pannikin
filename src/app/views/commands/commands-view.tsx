@@ -30,12 +30,12 @@ export class CommandsView extends Component<CommandsViewProps, CommandsViewState
   public render() {
     return (
         <div>
-          <h1>Комманда1</h1>
-          {this.props.gameStore.team1.map(({name, id}) => (
+          <h1>Команда1</h1>
+          {this.props.gameStore.team1Players.map(({name, id}) => (
               <div key={id}>{name}</div>
           ))}
-          <h1>Комманда2</h1>
-          {this.props.gameStore.team2.map(({name, id}) => (
+          <h1>Команда2</h1>
+          {this.props.gameStore.team2Players.map(({name, id}) => (
               <div key={id}>{name}</div>
           ))}
           <RaisedButton label="Вернутся в настройки игры"
