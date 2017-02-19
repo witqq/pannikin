@@ -44,5 +44,4 @@ export class Game {
     }
     return !this.players.values().some(player => !isPlayerValid(player, this))
   }
-
 }
