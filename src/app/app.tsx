@@ -1,12 +1,18 @@
 import * as React from "react";
 import AppBar from "material-ui/AppBar";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import {Stores, appStore} from "../stores";
+import {Stores, appStore, gameStore} from "../stores";
 import {inject, observer} from "mobx-react";
 import {RouteComponentProps} from "react-router";
 import {APP_TITLE} from "./constants/app-constants";
-import Component = React.Component;
 import {appHistory} from "./app-history";
+import "./app.less";
+import "./flex-container.less";
+import IconMenu from "material-ui/IconMenu";
+import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
+import MenuItem from "material-ui/MenuItem";
+import IconButton from "material-ui/IconButton";
+import Component = React.Component;
 
 export interface AppProps extends Stores, RouteComponentProps<{}, {}> {
 
@@ -15,7 +21,7 @@ export interface AppProps extends Stores, RouteComponentProps<{}, {}> {
 export interface AppState {
 }
 
-@inject(appStore)
+@inject(appStore, gameStore)
 @observer
 export class App extends Component<AppProps, AppState> {
 
@@ -32,18 +38,42 @@ export class App extends Component<AppProps, AppState> {
     if (currentPath !== "/") {
       appHistory.push("/");
     }
+  };
+
+  private onReset = () => {
+    this.props.gameStore.reset();
+    this.goHome();
+  }
+
+  private getRightButton() {
+    let iconButtonElement = (
+        <IconButton>
+          <MoreVertIcon/>
+        </IconButton>
+    )
+    return (
+        <IconMenu iconButtonElement={iconButtonElement}
+                  targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                  anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+          <MenuItem primaryText="Начать новую игру"
+                    onClick={this.onReset}/>
+        </IconMenu>
+    )
   }
 
   render() {
     const {appStore} = this.props;
     return (
         <MuiThemeProvider>
-          <div>
+          <div className="flex-container">
             <AppBar title={appStore.title}
-                    iconClassNameRight="muidocs-icon-navigation-expand-more"
                     onTitleTouchTap={this.goHome}
-                    titleStyle={{cursor:"pointer"}}/>
-            {this.props.children}
+                    titleStyle={{cursor:"pointer"}}
+                    className="app-bar flex-container-header"
+                    iconElementRight={this.getRightButton()}/>
+            <div className="app-container flex-container-content">
+              {this.props.children}
+            </div>
           </div>
         </MuiThemeProvider>
     );

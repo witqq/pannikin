@@ -1,5 +1,5 @@
-import {AppStore} from "./app/store/app-store";
-import {Game} from "./app/store/game";
+import {AppStore} from "./app/stores/app-store";
+import {Game} from "./app/stores/game";
 
 export const appStore = "appStore";
 

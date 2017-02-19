@@ -1,22 +1,22 @@
 import * as React from "react";
-import {GameView} from "./game-view";
+import {GameSettingsView} from "../game-settings/game-settings-view";
 import {observer, inject} from "mobx-react";
-import {Stores, appStore} from "../../stores";
+import {Stores, appStore} from "../../../stores";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
-import {APP_TITLE} from "../constants/app-constants";
+import {APP_TITLE} from "../../constants/app-constants";
 
-export interface MainProps extends Stores {
+export interface MainViewProps extends Stores {
 
 }
 
-export interface MainState {
+export interface MainViewState {
 
 }
 
 @inject(appStore)
 @observer
-export class Main extends Component<MainProps, MainState> {
+export class Main extends Component<MainViewProps, MainViewState> {
 
   constructor(props) {
     super(props);
@@ -28,6 +28,6 @@ export class Main extends Component<MainProps, MainState> {
   }
 
   public render() {
-    return <GameView/>;
+    return <GameSettingsView/>;
   }
 }

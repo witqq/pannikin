@@ -1,8 +1,8 @@
-import {observable} from "mobx";
 import * as uuid from "uuid";
 import {persist} from "mobx-persist/lib";
-export class Player {
+import {observable} from "mobx";
 
+export class IdName {
   constructor(name: string) {
     this.id = uuid.v4();
     this.name = name;
@@ -14,8 +14,4 @@ export class Player {
   @persist
   @observable
   name: string = "";
-
-  @persist("list")
-  @observable
-  words: Array<string> = [];
 }

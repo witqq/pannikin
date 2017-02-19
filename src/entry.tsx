@@ -1,8 +1,8 @@
 import * as React from "react";
 import {Provider} from "mobx-react";
-import {Stores, appStore, gameStore} from "./stores";
-import {AppStore} from "./app/store/app-store";
-import {Game} from "./app/store/game";
+import {Stores, gameStore} from "./stores";
+import {AppStore} from "./app/stores/app-store";
+import {Game} from "./app/stores/game";
 import {AppRouter} from "./app/app-router";
 import "normalize.css/normalize.css";
 import {create} from "mobx-persist/lib";
@@ -15,7 +15,8 @@ injectTapEventPlugin();
 const persistStore = create();
 
 const stores: Stores = {
-  appStore: persistStore(appStore, new AppStore()),
+  // appStore: persistStore(appStore, new AppStore()),
+  appStore: new AppStore(),
   gameStore: persistStore(gameStore, new Game())
 };
 

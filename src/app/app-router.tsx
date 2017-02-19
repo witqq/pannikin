@@ -1,8 +1,8 @@
 import * as React from "react";
 import {Router, Route, IndexRoute, Redirect} from "react-router";
 import {App} from "./app";
-import {Main} from "./view/main";
-import {PlayerView} from "./view/player-view";
+import {Main} from "./views/main/main-view";
+import {PlayerView} from "./views/player/player-view";
 import {appHistory} from "./app-history";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
