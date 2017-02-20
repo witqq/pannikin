@@ -30,7 +30,7 @@ export class CommandsView extends Component<CommandsViewProps, CommandsViewState
   };
 
   private startFirstRound = () => {
-    this.props.gameStore.startFirstRound();
+    this.props.gameStore.startNextRound();
   };
 
   public render() {

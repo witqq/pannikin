@@ -30,8 +30,13 @@ module.exports = {
             jQuery: 'jquery',
             $: 'jquery',
             jquery: 'jquery',
-            "window.jQuery": 'jquery',
-            Promise : "bluebird"
+            "window.jQuery": 'jquery'
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'BROWSER': JSON.stringify(true),
+                'NODE_ENV': JSON.stringify('development')
+            }
         }),
     ],
     module: {

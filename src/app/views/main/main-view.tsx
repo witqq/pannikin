@@ -6,6 +6,8 @@ import {APP_TITLE} from "../../constants/app-constants";
 import {GameState} from "../../stores/game-states";
 import {CommandsView} from "../commands/commands-view";
 import {RoundView} from "../round/round-view";
+import {RoundStatsView} from "../round-stats/round-stats-view";
+import {GameStatsView} from "../game-stats/game-stats-view";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
 
@@ -37,8 +39,11 @@ export class Main extends Component<MainViewProps, MainViewState> {
       case GameState.Commands:
         return <CommandsView/>;
       case GameState.Play:
-        // return <div>asdasd</div>;
         return <RoundView/>;
+      case GameState.RoundEnd:
+        return <RoundStatsView/>;
+      case GameState.GameOver:
+        return <GameStatsView/>;
       default:
         return <div>Что-то пошло не так</div>;
     }

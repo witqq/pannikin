@@ -1,5 +1,7 @@
 export enum GameState{
   Settings,
   Commands,
-  Play
+  Play,
+  RoundEnd,
+  GameOver
 }

@@ -29,7 +29,7 @@ module.exports = {
                 'BROWSER': JSON.stringify(true),
                 'NODE_ENV': JSON.stringify('production')
             }
-        })
+        }),
     ],
     module: {
         loaders: [

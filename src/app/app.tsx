@@ -13,8 +13,9 @@ import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import MenuItem from "material-ui/MenuItem";
 import IconButton from "material-ui/IconButton";
 import {SnackBarView} from "./views/snack-bar/snack-bar-view";
-import Component = React.Component;
 import DevTools from "mobx-react-devtools";
+import {If} from "./utils/if-component";
+import Component = React.Component;
 
 export interface AppProps extends Stores, RouteComponentProps<{}, {}> {
 
@@ -45,7 +46,11 @@ export class App extends Component<AppProps, AppState> {
   private onReset = () => {
     this.props.gameStore.reset();
     this.goHome();
-  }
+  };
+
+  private createTest = () => {
+    this.props.gameStore.createTestData();
+  };
 
   private getRightButton() {
     let iconButtonElement = (
@@ -59,8 +64,18 @@ export class App extends Component<AppProps, AppState> {
                   anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
           <MenuItem primaryText="Начать новую игру"
                     onClick={this.onReset}/>
+          <MenuItem primaryText="Тестовые игроки"
+                    onClick={this.createTest}/>
         </IconMenu>
     )
+  }
+
+  private getContent() {
+    const {appStore, children} = this.props;
+    if (appStore.loading) {
+      return <div>загрузка</div>
+    }
+    return children;
   }
 
   render() {
@@ -74,10 +89,12 @@ export class App extends Component<AppProps, AppState> {
                     className="app-bar flex-container-header"
                     iconElementRight={this.getRightButton()}/>
             <div className="app-container flex-container-content">
-              {this.props.children}
+              {this.getContent()}
             </div>
             <SnackBarView/>
-            <DevTools/>
+            <If cond={"production" !== process.env.NODE_ENV}>
+              <DevTools/>
+            </If>
           </div>
         </MuiThemeProvider>
     );

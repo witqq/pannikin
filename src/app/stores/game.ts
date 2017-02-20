@@ -34,6 +34,10 @@ export class Game {
     this.players = new ObservableMap({} as StringMap<Player>);
     this.playersByTeam = [];
     this.state = GameState.Settings;
+    this.rounds = [];
+    this.currentPlayerStarted = false;
+    this.currentPlayerStartedTime = undefined;
+    this.currentPlayerWordsResolve = 0;
   }
 
   @persist
@@ -73,7 +77,7 @@ export class Game {
   @observable
   currentPlayerWordsResolve = 0;
 
-  @computed get currentRoundIndex() {
+  @computed get currentRoundIndex(): number {
     return this.rounds.length - 1;
   }
 
@@ -84,12 +88,16 @@ export class Game {
     return this.rounds[this.currentRoundIndex];
   }
 
+  @computed get currentRoundName() {
+    return `Раунд ${this.currentRoundIndex + 1}`;
+  }
+
   @computed get currentTeamPlayers(): Array<string> {
     const playersByTeam = this.playersByTeam[this.currentTeam];
     return playersByTeam && playersByTeam.playerIds;
   }
 
-  @computed get currentPlayer() {
+  @computed get currentPlayer(): Player {
     const playersByTeam = this.currentTeamPlayers;
     if (!playersByTeam) {
       return;
@@ -139,12 +147,45 @@ export class Game {
     this.currentTeam = randomInt(0, 2);
   }
 
-  @computed get team1Players() {
+  @computed get team1Players(): Array<Player> {
     return this.getPlayersByTeam(Teams.Team1);
   }
 
-  @computed get team2Players() {
+  @computed get team2Players(): Array<Player> {
     return this.getPlayersByTeam(Teams.Team2);
+  }
+
+  roundResultByTeam(team: Teams, roundIndex: number) {
+    let res = 0;
+    this.getPlayersByTeam(team).forEach(player =>
+        res += player.resultsByRound[roundIndex].resolvedWords.length
+    );
+    return res;
+  }
+
+  @computed get team1PlayersCurrRoundResults(): number {
+    return this.roundResultByTeam(Teams.Team1, this.currentRoundIndex);
+  }
+
+  @computed get team2PlayersCurrRoundResults(): number {
+    return this.roundResultByTeam(Teams.Team2, this.currentRoundIndex);
+  }
+
+  gameResults(team: Teams): number {
+    let res = 0;
+    for (let i = 0; i < this.rounds.length; i++) {
+      res += this.roundResultByTeam(team, i);
+    }
+    return res;
+
+  }
+
+  @computed get team1GameResults(): number {
+    return this.gameResults(Teams.Team1);
+  }
+
+  @computed get team2GameResults(): number {
+    return this.gameResults(Teams.Team2);
   }
 
   @computed get allWords(): StringMap<Word> {
@@ -155,7 +196,7 @@ export class Game {
     return words;
   }
 
-  private getPlayersByTeam(team: Teams) {
+  private getPlayersByTeam(team: Teams): Array<Player> {
     return this.players.values().filter(player => player.team === team);
   }
 
@@ -164,7 +205,7 @@ export class Game {
     this.initialize();
   }
 
-  @computed get canStart() {
+  @computed get canStart(): boolean {
     if (this.players.keys().length < 3) {
       return false;
     }
@@ -172,14 +213,17 @@ export class Game {
   }
 
   @action
-  startFirstRound() {
+  startNextRound() {
+    if (this.isGameEnd) {
+      return;
+    }
     this.rounds.push(new Round(this));
     this.resetCurrentPlayerStarted();
     this.resetCurrentPlayerTime();
     this.state = GameState.Play;
   }
 
-  @computed get timeLeft() {
+  @computed get timeLeft(): number {
     if (!this.currentPlayerStarted) {
       return ROUND_TIME;
     }
@@ -226,6 +270,37 @@ export class Game {
     this.currentTeam = this.currentTeam === Teams.Team1 && Teams.Team2 || Teams.Team1;
     currentTeamPlayers.push(currentTeamPlayers.shift());
     this.resetCurrentPlayerStarted();
+  }
+
+  @action
+  endRound() {
+    this.nextPlayer();
+    this.state = GameState.RoundEnd;
+  }
+
+  @computed get isGameEnd(): boolean {
+    return this.rounds.length === 3;
+  }
+
+  @action
+  createTestData() {
+    this.initialize();
+    this.wordsCnt = 3;
+    this.addTestPlayerWithWords("Вася", ["Пушкин", "Есенин", "Моцарт"]);
+    this.addTestPlayerWithWords("Петя", ["Энштейн", "Винни-Пух", "Гагарин"]);
+    this.addTestPlayerWithWords("Маша", ["Гермиона", "Петр I", "Дима Пепеляев"]);
+  }
+
+  @action
+  addTestPlayerWithWords(name: string, words: Array<string>) {
+    const player = new Player(name);
+    words.forEach(word => player.words.push(new Word(word)));
+    this.players.set(player.id, player);
+  }
+
+  @action
+  finishGame() {
+    this.state = GameState.GameOver
   }
 
 }
