@@ -12,7 +12,7 @@ import {randomInt} from "../utils/random-int";
 import {now} from "mobx-utils";
 
 export const WORDS_COUNT = 5;
-export const ROUND_TIME = 5;
+export const ROUND_TIME = 30;
 export class Game {
 
   constructor() {
