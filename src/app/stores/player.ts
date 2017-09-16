@@ -5,6 +5,12 @@ import {Word} from "./word";
 import {Game} from "./game";
 import {Teams} from "./teams";
 
+export class PlayerRoundResults {
+  @persist("list")
+  @observable
+  resolvedWords: Array<string> = []
+}
+
 export class Player extends IdName {
 
   constructor(name: string) {
@@ -26,7 +32,8 @@ export class Player extends IdName {
   @observable
   team: Teams;
 
-  @computed get teamName() {
+  @computed
+  get teamName() {
     return this.team === Teams.Team1 && "1" || "2";
   }
 
@@ -49,12 +56,12 @@ export const playerWordRemaining = (player: Player, gameStore: Game): number => 
   return gameStore.wordsCnt - player.words.length;
 }
 
-export const addWord = action((player: Player, newWord: string): string|boolean => {
+export const addWord = action((player: Player, newWord: string): string | boolean => {
   if (!newWord) {
     return false;
   }
   const index = player.words.findIndex(word =>
-      word.name.toLowerCase() === newWord.toLowerCase()
+    word.name.toLowerCase() === newWord.toLowerCase()
   );
   if (index !== -1) {
     return "Такое слово уже есть";
@@ -63,8 +70,3 @@ export const addWord = action((player: Player, newWord: string): string|boolean 
   return true;
 })
 
-export class PlayerRoundResults {
-  @persist
-  @observable
-  resolvedWords: Array<string> = []
-}

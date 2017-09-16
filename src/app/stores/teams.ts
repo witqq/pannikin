@@ -1,4 +1,4 @@
-export enum Teams{
+export enum Teams {
   Team1,
   Team2
 }

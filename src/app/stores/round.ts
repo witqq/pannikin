@@ -11,7 +11,7 @@ export class Round {
     }
   }
 
-  @persist('list')
+  @persist("list")
   @observable
   wordIds: Array<string>;
 
@@ -37,7 +37,7 @@ export class Round {
 }
 
 export class TeamPlayers {
-  @persist('list')
+  @persist("list")
   @observable
   playerIds: Array<string> = [];
 }

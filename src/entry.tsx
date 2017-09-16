@@ -6,10 +6,9 @@ import {Game} from "./app/stores/game";
 import {AppRouter} from "./app/app-router";
 import "normalize.css/normalize.css";
 import {AppSnackBar} from "./app/views/snack-bar/snack-bar-store";
-import Component = React.Component;
-import ClassAttributes = React.ClassAttributes;
-import injectTapEventPlugin = require("react-tap-event-plugin");
 import {createPromise} from "./app/utils/create-promise-persist-store";
+import injectTapEventPlugin = require("react-tap-event-plugin");
+import Component = React.Component;
 
 injectTapEventPlugin();
 
@@ -38,8 +37,8 @@ export class Entry extends Component<{}, {}> {
 
   public render() {
     return (
-        <Provider {...stores}>
-          <AppRouter/>
-        </Provider>);
+      <Provider {...stores}>
+        <AppRouter/>
+      </Provider>);
   }
 }

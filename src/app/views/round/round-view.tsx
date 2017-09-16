@@ -5,9 +5,11 @@ import {TimeLeftView} from "./time-left-view";
 import {WordsLeftView} from "./words-left-view";
 import {RoundContentView} from "./round-content-view";
 import {autorun} from "mobx";
+import Card from "material-ui/Card";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
-export interface RoundViewProps extends ClassAttributes<RoundView>,Stores {
+
+export interface RoundViewProps extends ClassAttributes<RoundView>, Stores {
 
 }
 
@@ -38,13 +40,13 @@ export class RoundView extends Component<RoundViewProps, RoundViewState> {
         return <div>Раунд не найден</div>
       }
       return (
-          <div>
-            <h2>{currentPlayer.name}</h2>
-            <h3>{`Команда ${currentPlayer.teamName}`}</h3>
-            <TimeLeftView/>
-            <WordsLeftView/>
-            <RoundContentView/>
-          </div>
+        <Card style={{padding: 14, margin: 14}}>
+          <h2>{currentPlayer.name}</h2>
+          <h3>{`Команда ${currentPlayer.teamName}`}</h3>
+          <TimeLeftView/>
+          <WordsLeftView/>
+          <RoundContentView/>
+        </Card>
       );
     }
     catch (e) {

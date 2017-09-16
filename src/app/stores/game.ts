@@ -10,17 +10,19 @@ import {Word} from "./word";
 import {TeamPlayers, Round} from "./round";
 import {randomInt} from "../utils/random-int";
 import {now} from "mobx-utils";
+import Bluebird = require("bluebird");
 
 export const WORDS_COUNT = 5;
 export const ROUND_TIME = 30;
+
 export class Game {
 
   constructor() {
     this.initialize();
     reaction(() => this.currentPlayerStarted && this.timeLeft <= 0,
-        () => {
-          this.resetCurrentPlayerTime();
-        })
+      () => {
+        this.resetCurrentPlayerTime();
+      })
   }
 
   @action
@@ -53,7 +55,7 @@ export class Game {
   players: ObservableMap<Player>;
 
   // порядок игроков
-  @persist('list', TeamPlayers)
+  @persist("list", TeamPlayers)
   @observable
   playersByTeam: Array<TeamPlayers>;
 
@@ -77,27 +79,32 @@ export class Game {
   @observable
   currentPlayerWordsResolve = 0;
 
-  @computed get currentRoundIndex(): number {
+  @computed
+  get currentRoundIndex(): number {
     return this.rounds.length - 1;
   }
 
-  @computed get currentRound(): Round {
+  @computed
+  get currentRound(): Round {
     if (!this.rounds.length) {
       return;
     }
     return this.rounds[this.currentRoundIndex];
   }
 
-  @computed get currentRoundName() {
+  @computed
+  get currentRoundName() {
     return `Раунд ${this.currentRoundIndex + 1}`;
   }
 
-  @computed get currentTeamPlayers(): Array<string> {
+  @computed
+  get currentTeamPlayers(): Array<string> {
     const playersByTeam = this.playersByTeam[this.currentTeam];
     return playersByTeam && playersByTeam.playerIds;
   }
 
-  @computed get currentPlayer(): Player {
+  @computed
+  get currentPlayer(): Player {
     const playersByTeam = this.currentTeamPlayers;
     if (!playersByTeam) {
       return;
@@ -136,9 +143,9 @@ export class Game {
     }
     this.playersByTeam = [new TeamPlayers(), new TeamPlayers()];
     this.players.values().forEach(player => {
-          player.resetResults();
-          this.playersByTeam[player.team].playerIds.push(player.id);
-        }
+        player.resetResults();
+        this.playersByTeam[player.team].playerIds.push(player.id);
+      }
     );
     this.setCurrentTeam();
   }
@@ -147,27 +154,31 @@ export class Game {
     this.currentTeam = randomInt(0, 2);
   }
 
-  @computed get team1Players(): Array<Player> {
+  @computed
+  get team1Players(): Array<Player> {
     return this.getPlayersByTeam(Teams.Team1);
   }
 
-  @computed get team2Players(): Array<Player> {
+  @computed
+  get team2Players(): Array<Player> {
     return this.getPlayersByTeam(Teams.Team2);
   }
 
   roundResultByTeam(team: Teams, roundIndex: number) {
     let res = 0;
     this.getPlayersByTeam(team).forEach(player =>
-        res += player.resultsByRound[roundIndex].resolvedWords.length
+      res += player.resultsByRound[roundIndex].resolvedWords.length
     );
     return res;
   }
 
-  @computed get team1PlayersCurrRoundResults(): number {
+  @computed
+  get team1PlayersCurrRoundResults(): number {
     return this.roundResultByTeam(Teams.Team1, this.currentRoundIndex);
   }
 
-  @computed get team2PlayersCurrRoundResults(): number {
+  @computed
+  get team2PlayersCurrRoundResults(): number {
     return this.roundResultByTeam(Teams.Team2, this.currentRoundIndex);
   }
 
@@ -180,15 +191,18 @@ export class Game {
 
   }
 
-  @computed get team1GameResults(): number {
+  @computed
+  get team1GameResults(): number {
     return this.gameResults(Teams.Team1);
   }
 
-  @computed get team2GameResults(): number {
+  @computed
+  get team2GameResults(): number {
     return this.gameResults(Teams.Team2);
   }
 
-  @computed get allWords(): StringMap<Word> {
+  @computed
+  get allWords(): StringMap<Word> {
     let words: StringMap<Word> = {};
     this.players.values().forEach(player => player.words.forEach(word => {
       words[word.id] = word;
@@ -205,7 +219,8 @@ export class Game {
     this.initialize();
   }
 
-  @computed get canStart(): boolean {
+  @computed
+  get canStart(): boolean {
     if (this.players.keys().length < 3) {
       return false;
     }
@@ -223,7 +238,8 @@ export class Game {
     this.state = GameState.Play;
   }
 
-  @computed get timeLeft(): number {
+  @computed
+  get timeLeft(): number {
     if (!this.currentPlayerStarted) {
       return ROUND_TIME;
     }
@@ -238,24 +254,39 @@ export class Game {
     return res;
   }
 
-  @action startShowWords() {
+  @action
+  startShowWords() {
     this.currentPlayerStartedTime = Date.now();
     this.currentPlayerStarted = true;
     this.currentRound.pickWord();
   }
 
-  @computed get currentWord(): string {
+  @computed
+  get currentWord(): string {
     const allWords = this.allWords[this.currentRound.currentWordId];
     return allWords && allWords.name;
   }
 
-  @action resolveCurrentWord() {
+  @observable
+  resolveButtonDisabled = false;
+
+  @action
+  disableResolveButton() {
+    this.resolveButtonDisabled = true;
+    Bluebird.delay(1000).then(() => {
+      this.resolveButtonDisabled = false;
+    })
+  }
+
+  @action
+  resolveCurrentWord() {
     this.currentPlayer.resolveWord(this.currentRoundIndex, this.currentRound.currentWordId);
     this.currentPlayerWordsResolve++;
     this.currentRound.pickWord();
     if (!this.currentRound.currentWordId) {
       this.resetCurrentPlayerTime();
     }
+    this.disableResolveButton();
   }
 
   @action
@@ -278,7 +309,8 @@ export class Game {
     this.state = GameState.RoundEnd;
   }
 
-  @computed get isGameEnd(): boolean {
+  @computed
+  get isGameEnd(): boolean {
     return this.rounds.length === 3;
   }
 

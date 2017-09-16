@@ -5,6 +5,7 @@ import RaisedButton from "material-ui/RaisedButton";
 import {GameState} from "../../stores/game-states";
 import FloatingActionButton from "material-ui/FloatingActionButton";
 import AvPlayArrow from "material-ui/svg-icons/av/play-arrow";
+import Card from "material-ui/Card";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
 
@@ -35,22 +36,22 @@ export class CommandsView extends Component<CommandsViewProps, CommandsViewState
 
   public render() {
     return (
-        <div>
-          <h1>Команда1</h1>
-          {this.props.gameStore.team1Players.map(({name, id}) => (
-              <div key={id}>{name}</div>
-          ))}
-          <h1>Команда2</h1>
-          {this.props.gameStore.team2Players.map(({name, id}) => (
-              <div key={id}>{name}</div>
-          ))}
-          <RaisedButton label="Вернутся в настройки игры"
-                        primary={true}
-                        onClick={this.onGoSettings}/>
-          <FloatingActionButton className="start-game-button"
-                                onClick={this.startFirstRound}>
-            <AvPlayArrow />
-          </FloatingActionButton>
-        </div>);
+      <Card style={{padding: 14, margin: 14}}>
+        <h1>Команда1</h1>
+        {this.props.gameStore.team1Players.map(({name, id}) => (
+          <div key={id}>{name}</div>
+        ))}
+        <h1>Команда2</h1>
+        {this.props.gameStore.team2Players.map(({name, id}) => (
+          <div key={id}>{name}</div>
+        ))}
+        <RaisedButton label="Вернутся в настройки игры"
+                      primary={true}
+                      onClick={this.onGoSettings}/>
+        <FloatingActionButton className="start-game-button"
+                              onClick={this.startFirstRound}>
+          <AvPlayArrow/>
+        </FloatingActionButton>
+      </Card>);
   }
 }

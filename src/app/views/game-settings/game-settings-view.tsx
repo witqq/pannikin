@@ -4,7 +4,6 @@ import {observer, inject} from "mobx-react";
 import List from "material-ui/List/List";
 import ListItem from "material-ui/List/ListItem";
 import {Stores, gameStore} from "../../../stores";
-import {appHistory} from "../../app-history";
 import TextField from "material-ui/TextField";
 import Card from "material-ui/Card/Card";
 import CardActions from "material-ui/Card/CardActions";
@@ -12,13 +11,11 @@ import CardText from "material-ui/Card/CardText";
 import FloatingActionButton from "material-ui/FloatingActionButton";
 import "./game-settings-view.less";
 import AvPlayArrow from "material-ui/svg-icons/av/play-arrow";
-import {now} from "mobx-utils";
+import {withRouter, RouteComponentProps} from "react-router";
 import Component = React.Component;
-import ClassAttributes = React.ClassAttributes;
 import FormEvent = React.FormEvent;
 
-export interface GameSettingsViewProps extends Stores {
-
+export interface GameSettingsViewProps extends Partial<RouteComponentProps<{}>>, Stores {
 }
 
 export interface GameSettingsViewState {
@@ -30,11 +27,11 @@ export interface GameSettingsViewState {
 export class GameSettingsView extends Component<GameSettingsViewProps, GameSettingsViewState> {
 
   private onAddPlayer = () => {
-    appHistory.push("/player");
+    this.props.history.push("/player");
   };
 
   private selectPlayer = (id: string) => {
-    appHistory.push(`/player/${id}`);
+    this.props.history.push(`/player/${id}`);
   };
 
   private onWordsCntChange = (ev: FormEvent<HTMLInputElement>) => {
@@ -52,7 +49,8 @@ export class GameSettingsView extends Component<GameSettingsViewProps, GameSetti
     const {gameStore} = this.props;
     return (
         <Card expandable={false}
-              expanded={true}>
+              expanded={true}
+              style={{padding: 14, margin: 14}}>
           <CardText expandable={true}>
             <TextField hintText="Количесвто слов"
                        floatingLabelText="Количесвто слов"
@@ -82,3 +80,5 @@ export class GameSettingsView extends Component<GameSettingsViewProps, GameSetti
         </Card>);
   }
 }
+
+export const GameSettingsViewWithRouter = withRouter(GameSettingsView);

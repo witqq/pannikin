@@ -8,7 +8,7 @@ import {AppSnackBar} from "../snack-bar/snack-bar-store";
 export class PlayerViewStore {
 
   constructor(props: PlayerViewProps) {
-    this.id = props.params.id;
+    this.id = props.match.params.id;
     this.gameStore = props.gameStore;
     this.isNew = !this.id;
   }
@@ -24,9 +24,8 @@ export class PlayerViewStore {
   @observable
   gameStore: Game;
 
-
-
-  @computed get player() {
+  @computed
+  get player() {
     const id = this.id;
     const players = this.gameStore.players;
     let player: Player;
@@ -39,11 +38,13 @@ export class PlayerViewStore {
     return playerViewModel(player);
   }
 
-  @computed get isValid() {
+  @computed
+  get isValid() {
     return isPlayerValid(this.player, this.gameStore);
   }
 
-  @computed get wordsRemaining() {
+  @computed
+  get wordsRemaining() {
     return playerWordRemaining(this.player, this.gameStore);
   }
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {GameSettingsView} from "../game-settings/game-settings-view";
+import {GameSettingsViewWithRouter} from "../game-settings/game-settings-view";
 import {observer, inject} from "mobx-react";
 import {Stores, appStore, gameStore} from "../../../stores";
 import {APP_TITLE} from "../../constants/app-constants";
@@ -9,7 +9,6 @@ import {RoundView} from "../round/round-view";
 import {RoundStatsView} from "../round-stats/round-stats-view";
 import {GameStatsView} from "../game-stats/game-stats-view";
 import Component = React.Component;
-import ClassAttributes = React.ClassAttributes;
 
 export interface MainViewProps extends Stores {
 
@@ -35,7 +34,7 @@ export class Main extends Component<MainViewProps, MainViewState> {
   public render() {
     switch (this.props.gameStore.state) {
       case GameState.Settings:
-        return  <GameSettingsView/>;
+        return <GameSettingsViewWithRouter/>;
       case GameState.Commands:
         return <CommandsView/>;
       case GameState.Play:

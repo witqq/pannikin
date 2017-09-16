@@ -5,6 +5,7 @@ import {RaisedButton} from "material-ui";
 import {If} from "../../utils/if-component";
 import Component = React.Component;
 import ClassAttributes = React.ClassAttributes;
+import Card from "material-ui/Card";
 
 export interface RoundStatsViewProps extends ClassAttributes<RoundStatsView>, Stores {
 
@@ -34,24 +35,24 @@ export class RoundStatsView extends Component<RoundStatsViewProps, RoundStatsVie
   public render() {
     const gameStore = this.props.gameStore;
     return (
-        <div>
-          <h1>Команда1</h1>
-          <h3> отгадано <span>{gameStore.team1PlayersCurrRoundResults}</span></h3>
-          <h1>Команда2</h1>
-          <h3> отгадано <span>{gameStore.team2PlayersCurrRoundResults}</span></h3>
-          <If cond={!gameStore.isGameEnd}>
-            <RaisedButton label="Следующий раунд"
+      <Card style={{padding: 14, margin: 14}}>
+        <h1>Команда1</h1>
+        <h3> отгадано <span>{gameStore.team1PlayersCurrRoundResults}</span></h3>
+        <h1>Команда2</h1>
+        <h3> отгадано <span>{gameStore.team2PlayersCurrRoundResults}</span></h3>
+        <If cond={!gameStore.isGameEnd}>
+          <RaisedButton label="Следующий раунд"
+                        primary={true}
+                        onClick={this.onNextRound}/>
+        </If>
+        <If cond={gameStore.isGameEnd}>
+          <div><h2>Игра окончена</h2>
+            <RaisedButton label="Результаты"
                           primary={true}
-                          onClick={this.onNextRound}/>
-          </If>
-          <If cond={gameStore.isGameEnd}>
-            <div><h2>Игра окончена</h2>
-              <RaisedButton label="Результаты"
-                            primary={true}
-                            onClick={this.onFinishGame}/>
-            </div>
-          </If>
-        </div>
+                          onClick={this.onFinishGame}/>
+          </div>
+        </If>
+      </Card>
     );
   }
 }

@@ -5,17 +5,14 @@ import {Stores, gameStore, appStore} from "../../../stores";
 import TextField from "material-ui/TextField";
 import RaisedButton from "material-ui/RaisedButton";
 import {autorun, computed} from "mobx";
-import {appHistory} from "../../app-history";
 import Card from "material-ui/Card/Card";
 import CardActions from "material-ui/Card/CardActions";
 import CardText from "material-ui/Card/CardText";
 import List from "material-ui/List/List";
 import ListItem from "material-ui/List/ListItem";
-import Snackbar from "material-ui/Snackbar";
 import {PlayerViewStore} from "./player-view-store";
 import {If} from "../../utils/if-component";
 import Component = React.Component;
-import ClassAttributes = React.ClassAttributes;
 import FormEvent = React.FormEvent;
 import KeyboardEvent = React.KeyboardEvent;
 
@@ -23,7 +20,7 @@ export interface PlayerViewParams {
   id?: string;
 }
 
-export interface PlayerViewProps extends RouteComponentProps<PlayerViewParams, any>, Stores {
+export interface PlayerViewProps extends RouteComponentProps<PlayerViewParams>, Stores {
 
 }
 
@@ -64,7 +61,7 @@ export class PlayerView extends Component<PlayerViewProps, PlayerViewState> {
 
   private onAdd = () => {
     this.store.addPlayer();
-    appHistory.replace("/");
+    this.props.history.replace("/");
   };
 
   private onWordChange = (ev: FormEvent<HTMLInputElement>) => {
@@ -96,45 +93,45 @@ export class PlayerView extends Component<PlayerViewProps, PlayerViewState> {
     const submitLabel = this.store.isNew && "Добавить игрока" || "Сохранить";
     const wordsRemaining = this.store.wordsRemaining;
     return (
-        <div>
-          <Card expandable={false}
-                expanded={true}>
-            <CardText expandable={true}>
-              <TextField hintText="Твое Имя"
-                         floatingLabelText="Твое Имя"
-                         value={this.player.name}
-                         onChange={this.onNameChange}
-                         ref={this.onNameRef}/>
-              <br/>
-              <If cond={wordsRemaining > 0}>
-                <TextField ref={ref => this.wordInput = ref}
-                           hintText={`Еще ${wordsRemaining} слов(а)`}
-                           floatingLabelText={`Еще ${wordsRemaining} слов(а)`}
-                           value={this.store.word}
-                           onChange={this.onWordChange}
-                           onKeyDown={this.onWordEnter}/>
-              </If>
-              <If cond={wordsRemaining < 0}>
-                <span>Убери {-1 * wordsRemaining} лишних слова</span>
-              </If>
-              <List>
-                {(
-                    this.player.words.reverse().map(({id, name}) =>
-                        <ListItem key={id}
-                                  primaryText={name}/>
-                    )
-                )}
-              </List>
-            </CardText>
-            <CardActions>
-              <RaisedButton label={submitLabel}
-                            primary={true}
-                            fullWidth={true}
-                            onClick={this.onAdd}
-                            disabled={!this.store.isValid}/>
-            </CardActions>
+      <div>
+        <Card expandable={false}
+              expanded={true}>
+          <CardText expandable={true}>
+            <TextField hintText="Твое Имя"
+                       floatingLabelText="Твое Имя"
+                       value={this.player.name}
+                       onChange={this.onNameChange}
+                       ref={this.onNameRef}/>
+            <br/>
+            <If cond={wordsRemaining > 0}>
+              <TextField ref={ref => this.wordInput = ref}
+                         hintText={`Еще ${wordsRemaining} слов(а)`}
+                         floatingLabelText={`Еще ${wordsRemaining} слов(а)`}
+                         value={this.store.word}
+                         onChange={this.onWordChange}
+                         onKeyDown={this.onWordEnter}/>
+            </If>
+            <If cond={wordsRemaining < 0}>
+              <span>Убери {-1 * wordsRemaining} лишних слова</span>
+            </If>
+            <List>
+              {(
+                this.player.words.reverse().map(({id, name}) =>
+                  <ListItem key={id}
+                            primaryText={name}/>
+                )
+              )}
+            </List>
+          </CardText>
+          <CardActions>
+            <RaisedButton label={submitLabel}
+                          primary={true}
+                          fullWidth={true}
+                          onClick={this.onAdd}
+                          disabled={!this.store.isValid}/>
+          </CardActions>
 
-          </Card>
-        </div>);
+        </Card>
+      </div>);
   }
 }
