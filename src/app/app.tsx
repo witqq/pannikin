@@ -17,7 +17,6 @@ import {If} from "./utils/if-component";
 import {Main} from "./views/main/main-view";
 import {PlayerView} from "./views/player/player-view";
 import {getMuiTheme, darkBaseTheme} from "material-ui/styles";
-import Paper from "material-ui/Paper";
 import Component = React.Component;
 
 export interface AppProps extends Stores, RouteComponentProps<{}> {
@@ -64,8 +63,10 @@ export class App extends Component<AppProps, AppState> {
                 anchorOrigin={{horizontal: "right", vertical: "top"}}>
         <MenuItem primaryText="Начать новую игру"
                   onClick={this.onReset}/>
-        <MenuItem primaryText="Тестовые игроки"
-                  onClick={this.createTest}/>
+        <If cond={"production" !== process.env.NODE_ENV}>
+          <MenuItem primaryText="Тестовые игроки"
+                    onClick={this.createTest}/>
+        </If>
       </IconMenu>
     )
   }
@@ -94,8 +95,8 @@ export class App extends Component<AppProps, AppState> {
                   titleStyle={{cursor: "pointer"}}
                   className="app-bar flex-container-header"
                   iconElementRight={this.getRightButton()}/>
-          <div className="app-container flex-container-content" >
-              {this.getContent()}
+          <div className="app-container flex-container-content">
+            {this.getContent()}
           </div>
           <SnackBarView/>
           <If cond={"production" !== process.env.NODE_ENV}>
